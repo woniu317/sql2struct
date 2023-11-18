@@ -34,25 +34,26 @@ type {{ .UpperCamelCaseName}} struct {
 {{end}}}
 
 // Insert{{.UpperCamelCaseName}} 插入数据
-func Insert{{.UpperCamelCaseName}}(ctx context.Context, db sqlx.DB, {{.Name}} *{{.UpperCamelCaseName}}) error {
-	return sqlx.NamedInsertContext(ctx, db, table{{.UpperCamelCaseName}}, {{.Name}})
+func Insert{{.UpperCamelCaseName}}(ctx context.Context, db sqlx.DB, {{.UpperCamelCaseNameParam}} *{{.UpperCamelCaseName}}) error {
+	return sqlx.NamedInsertContext(ctx, db, table{{.UpperCamelCaseName}}, {{.UpperCamelCaseNameParam}})
 }
 
 // BulkInsert{{.UpperCamelCaseName}} 批量插入数据
-func BulkInsert{{.UpperCamelCaseName}}(ctx context.Context, db sqlx.DB, {{.Name}}s *{{.UpperCamelCaseName}}) error {
-	return sqlx.BulkInsertContext(ctx, db, table{{.UpperCamelCaseName}}, Slice2Interface({{.Name}}s)...)
+func BulkInsert{{.UpperCamelCaseName}}(ctx context.Context, db sqlx.DB, {{.UpperCamelCaseNameParam}}s []*{{.UpperCamelCaseName}}) error {
+	return sqlx.BulkInsertContext(ctx, db, table{{.UpperCamelCaseName}}, Slice2Interface({{.UpperCamelCaseNameParam}}s)...)
 }
 
 `
 
 type Table struct {
-	Package               string  `sql:"package"`
-	Name                  string  `sql:"name"`
-	UpperCamelCaseName    string  `sql:"upper_camel_case_name"`
-	Comment               string  `sql:"comment"`
-	Fields                []Field `sql:"fields"`
-	ContainsTimeField     bool    `sql:"contains_time"`
-	ContainsNullTimeField bool    `sql:"contains_null_time"`
+	Package                 string  `sql:"package"`
+	Name                    string  `sql:"name"`
+	UpperCamelCaseName      string  `sql:"upper_camel_case_name"`
+	UpperCamelCaseNameParam string  `sql:"upper_camel_case_name_param"`
+	Comment                 string  `sql:"comment"`
+	Fields                  []Field `sql:"fields"`
+	ContainsTimeField       bool    `sql:"contains_time"`
+	ContainsNullTimeField   bool    `sql:"contains_null_time"`
 }
 type Field struct {
 	IsPK               bool   `json:"is_pk"`
