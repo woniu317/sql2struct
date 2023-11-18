@@ -46,7 +46,7 @@ func (m *mysqlParser) ParseMysqlDDL(s string) (table.Table, error) {
 			tableName := strings.Split(line, "`")[1]
 			t.Name = config.Cnf.TablePrefix + tableName
 			t.UpperCamelCaseName = utils.Underline2UpperCamelCase(t.Name)
-			t.UpperCamelCaseNameParam = strings.ToLower(t.UpperCamelCaseName) + t.UpperCamelCaseName[1:]
+			t.UpperCamelCaseNameParam = strings.ToLower(t.UpperCamelCaseName[:1]) + t.UpperCamelCaseName[1:]
 			continue
 		}
 		if strings.Contains(line, "ENGINE") && strings.Contains(line, "COMMENT=") {
