@@ -18,7 +18,7 @@ func init() {
 	Cnf = &Config{
 		DBType:      "mysql",
 		TableRegexs: []string{},
-		DBTag:       "gorm",
+		DBTag:       "db",
 		WithJsonTag: true,
 		OutputDir:   "./model",
 		PackageName: "model",

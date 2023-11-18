@@ -23,6 +23,7 @@ var MysqlType2GoType = map[string]string{
 	"datetime":  "time.Time",
 	"timestamp": "time.Time",
 	"json":      "string",
+	"nulltime":  "null.Time",
 }
 
 type mysqlParser struct {
@@ -58,10 +59,17 @@ func (m *mysqlParser) ParseMysqlDDL(s string) (table.Table, error) {
 			field.Type = strings.TrimRightFunc(strings.Split(line, " ")[1], func(r rune) bool {
 				return r < 'a' || r > 'z'
 			})
-			field.Type = MysqlType2GoType[field.Type]
-			if strings.Contains(field.Type, "time") {
+			fieldType := field.Type
+			if strings.Contains(field.Name, "finished_at") {
+				fieldType = "nulltime"
+			}
+			field.Type = MysqlType2GoType[fieldType]
+			if strings.Contains(fieldType, "nulltime") {
+				t.ContainsNullTimeField = true
+			} else if strings.Contains(fieldType, "time") {
 				t.ContainsTimeField = true
 			}
+
 			if strings.Contains(line, "COMMENT") {
 				field.Comment = strings.Trim(strings.Split(line, "COMMENT '")[1], "',")
 			}
